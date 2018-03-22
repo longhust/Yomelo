@@ -1,0 +1,3 @@
+rootProject.name = 'yomelo_app'
+
+include ':app'
