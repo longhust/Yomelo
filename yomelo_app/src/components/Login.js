@@ -52,7 +52,7 @@ export default class Login extends Component {
                                 <TextInput
                                     style={styles.input}
                                     underlineColorAndroid='rgba(0,0,0,0)'
-                                    placeholder='Mật khẩu'
+                                    placeholder='Password'
                                     placeholderTextColor='rgba(255,255,255,0.2)'
                                     returnKeyType='go'
                                     secureTextEntry={true}
@@ -73,34 +73,8 @@ export default class Login extends Component {
                                         <Button full light
                                             style={[styles.buttonSocial, { backgroundColor: '#4267B2' }]}
                                         >
-                                            <Icon name='plane' />
-                                            <Text>Facebook</Text>
-                                        </Button>
-                                    </View>
-                                    <View style={{ flex: 1, alignItems: 'center' }}>
-                                        <Button full light
-                                            style={[styles.buttonSocial, { backgroundColor: '#db4437' }]}
-                                        >
-                                            <Icon name='plane' />
-                                            <Text>Google+</Text>
-                                        </Button>
-                                    </View>
-                                </View>
-                                <View style={styles.loginWithSocial}>
-                                    <View style={{ flex: 1, alignItems: 'center', alignContent: 'center' }}>
-                                        <Button full light
-                                            style={[styles.buttonSocial, { backgroundColor: '#1da1f2' }]}
-                                        >
-                                            <Icon name='plane' />
-                                            <Text>Twitter</Text>
-                                        </Button>
-                                    </View>
-                                    <View style={{ flex: 1, alignItems: 'center' }}>
-                                        <Button full light
-                                            style={[styles.buttonSocial, { backgroundColor: '#d62d78' }]}
-                                        >
-                                            <Icon name='plane' />
-                                            <Text>Instagram</Text>
+                                            <Icon name='logo-facebook' style={{color:'white'}} />
+                                            <Text style={{color:'white'}}>Facebook</Text>
                                         </Button>
                                     </View>
                                 </View>
@@ -162,7 +136,7 @@ const styles = StyleSheet.create({
     buttonContainer: {
         backgroundColor: '#0ABAEE',
         paddingVertical: 10,
-        opacity: 0.5
+       // opacity: 0.5
     },
     buttonText: {
         textAlign: 'center',

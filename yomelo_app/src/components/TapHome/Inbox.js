@@ -1,27 +1,47 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
-    View,
-    Text,
-    Image
-} from 'react-native'
-import { Icon } from 'native-base';
-import HeaderTitle from '../element/HeaderTitle'
+    Container,
+    Header,
+    Title,
+    Button,
+    Icon,
+    Tabs,
+    Tab,
+    Right,
+    Left,
+    Body
+} from "native-base";
+import HeaderTitle from '../element/HeaderTitle';
+import Messages from '../TapInbox/Messages';
+import Notifications from '../TapInbox/Notifications';
 export default class Inbox extends Component {
 
-    static navigationOptions = {
+    static navigationOptions = ({ navigation }) => ({
         //header:null,
-        headerLeft:null,
-        headerTitle:<HeaderTitle title='Inbox'/>,
-        tabBarIcon: () => {
-            return <Image source={require('../../images/inbox.png')} 
-            style={{tintColor:'gray', width:25,height:25}}/>
+        headerLeft: null,
+        headerTitle: <HeaderTitle title='Inbox' />,
+        tabBarIcon: ({ focused, tintColor }) => {
+            return <Icon name='ios-chatboxes-outline' style={{ color: tintColor }} />
         }
-    }
-    render(){
-        return(
-            <View>
-                <Text>Inbox</Text>
-            </View>
+    })
+    render() {
+        return (
+            <Container>
+                <Tabs>
+                    <Tab heading="Notification"
+                        tabStyle={{backgroundColor:'white'}}
+                        textStyle={{color:'gray'}}
+                    >
+                        <Notifications />
+                    </Tab>
+                    <Tab heading="Messages"
+                        tabStyle={{backgroundColor:'white'}}
+                        textStyle={{color:'gray'}}
+                    >
+                        <Messages />
+                    </Tab>
+                </Tabs>
+            </Container>
         )
     }
 }

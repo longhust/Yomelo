@@ -1,5 +1,31 @@
 export var listCampaigns=[
-    {}
+    {
+        key:'123'
+    },
+    {
+        key:'124'
+    },
+    {
+        key:'125'
+    },
+    {
+        key:'129'
+    },
+    {
+        key:'176'
+    },
+    {
+        key:'1265'
+    },
+    {
+        key:'12456578'
+    },
+    {
+        key:'1245678'
+    },
+    {
+        key:'12877'
+    }
 ];
 
 export var listCategories=[

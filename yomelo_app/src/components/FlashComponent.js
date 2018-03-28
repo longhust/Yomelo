@@ -5,6 +5,7 @@ import {
     Image,
     Dimensions,
     StyleSheet,
+    StatusBar
 } from 'react-native'
 import { Container, Content, Button, Icon } from 'native-base';
 
@@ -18,7 +19,9 @@ export default class Login extends Component {
     render() {
         // console.log(sizeScreen);
         return (
+            
             <View style={[styles.container,{alignItems:'stretch'}]}>
+                <StatusBar/>
                 <Image
                     style={styles.image}
                     source={require('../images/lauch1.png')}
@@ -32,6 +35,7 @@ export default class Login extends Component {
                 <View style={[styles.container,{alignItems:'stretch'}]}>
                     <Button block primary
                        style={{opacity:0.6}}
+                       onPress={()=>this.props.navigation.navigate('Register')}
                     >
                         <Text style={{color:'white'}}>SIGN UP</Text>
                     </Button>
