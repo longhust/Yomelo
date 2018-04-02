@@ -18,7 +18,7 @@ export default class ItemCategory extends Component {
                         underlayColor='gray'
                     >
                         <Image
-                            source={require('../../images/heart.png')}
+                            source={require('../images/heart.png')}
                             style={styles.image}
                         />
                     </TouchableHighlight>

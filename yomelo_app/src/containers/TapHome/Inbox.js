@@ -11,7 +11,7 @@ import {
     Left,
     Body
 } from "native-base";
-import HeaderTitle from '../element/HeaderTitle';
+import HeaderTitle from '../../components/HeaderTitle';
 import Messages from '../TapInbox/Messages';
 import Notifications from '../TapInbox/Notifications';
 export default class Inbox extends Component {

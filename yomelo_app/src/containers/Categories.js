@@ -5,8 +5,8 @@ import {
     Text,
     Image
 } from 'react-native'
-import ItemCategory from './element/ItemCategories';
-import HeaderTitle from './element/HeaderTitle'
+import ItemCategory from '../components/ItemCategories';
+import HeaderTitle from '../components/HeaderTitle'
 import {listCategories} from '../data/listcampaign'
 export default class Categories extends Component {
 

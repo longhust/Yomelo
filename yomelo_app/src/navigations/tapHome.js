@@ -3,10 +3,10 @@
 import { TabNavigator, TabBarTop, StackNavigator } from 'react-navigation'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import Home from '../components/TapHome/Home';
-import Inbox from '../components/TapHome/Inbox';
-import Campaigns from '../components/TapHome/Campaigns';
-import Profile from '../components/TapHome/Profile'
+import Home from '../containers/TapHome/Home';
+import Inbox from '../containers/TapHome/Inbox';
+import Campaigns from '../containers/TapHome/Campaigns';
+import Profile from '../containers/TapHome/Profile'
 
 
 export default TapHome= TabNavigator({

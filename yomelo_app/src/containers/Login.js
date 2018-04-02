@@ -60,23 +60,36 @@ export default class Login extends Component {
                                     ref={'txtPassword'}
                                 />
                                 <TouchableHighlight style={styles.buttonContainer}
-                                    onPress={()=>this.props.navigation.navigate('TapHome')}
+                                    onPress={() => this.props.navigation.navigate('TapHome')}
+                                    underlayColor='#0ABAEE'
                                 >
                                     <Text style={styles.buttonText}>Sign In</Text>
                                 </TouchableHighlight>
-                                <TouchableHighlight>
+                                <TouchableHighlight style={{ paddingTop: 10, width: 120, borderRadius: 20, alignContent: 'center', justifyContent: 'center' }}
+                                    underlayColor='#0ABAEE'
+                                    onPress={() => { this.props.navigation.navigate("ForgetPassWord") }}
+                                >
                                     <Text style={styles.textForgetPassword}>Quên mật khẩu ?</Text>
                                 </TouchableHighlight>
 
                                 <View style={styles.loginWithSocial}>
-                                    <View style={{ flex: 1, alignItems: 'center', alignContent: 'center', shadowRadius:20 }}>
+                                    <View style={{ flex: 1, alignItems: 'center', alignContent: 'center', shadowRadius: 20 }}>
                                         <Button full light
                                             style={[styles.buttonSocial, { backgroundColor: '#4267B2' }]}
                                         >
-                                            <Icon name='logo-facebook' style={{color:'white'}} />
-                                            <Text style={{color:'white'}}>Facebook</Text>
+                                            <Icon name='logo-facebook' style={{ color: 'white' }} />
+                                            <Text style={{ color: 'white' }}>Login With Facebook</Text>
                                         </Button>
                                     </View>
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingTop: 30 }}>
+                                    <Text style={{ color: 'white' }}>Đã có tài khoản?</Text>
+                                    <Button transparent
+                                        style={{ borderRadius: 20 }}
+                                        onPress={() => this.props.navigation.navigate("Register")}
+                                    >
+                                        <Text style={{ color: '#0abaee' }}>Đăng ký</Text>
+                                    </Button>
                                 </View>
                             </View>
 
@@ -136,19 +149,20 @@ const styles = StyleSheet.create({
     buttonContainer: {
         backgroundColor: '#0ABAEE',
         paddingVertical: 10,
-       // opacity: 0.5
+        alignItems: 'center'
+        // opacity: 0.5
     },
     buttonText: {
         textAlign: 'center',
-        color: 'rgb(32,53,70)',
+        color: 'white',
         fontWeight: 'bold',
         fontSize: 18,
     },
     textForgetPassword: {
         color: 'white',
         fontSize: 15,
-        alignItems: 'center',
         textDecorationLine: 'underline',
+        justifyContent: 'center'
         // textDecorationLineColor:'blue'
     },
     buttonSocial: {
@@ -156,7 +170,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     loginWithSocial: {
-        paddingTop: 10,
+        paddingTop: 15,
         flexDirection: 'row',
         //backgroundColor: 'red'
     },

@@ -21,7 +21,11 @@ export default class Login extends Component {
         return (
             
             <View style={[styles.container,{alignItems:'stretch'}]}>
-                <StatusBar/>
+                {/* <StatusBar
+                    translucent
+                    barStyle="light-content"
+                    backgroundColor="rgba(255, 255, 255, 0.2)"
+                /> */}
                 <Image
                     style={styles.image}
                     source={require('../images/lauch1.png')}
@@ -30,7 +34,7 @@ export default class Login extends Component {
                     <Text style={styles.textTitle}>Yomelo</Text>
                 </View>
                 <View style={styles.container}>
-                    <Text style={styles.textSlogan}>Wellcome to yomelo, Apply with us</Text>
+                    <Text style={styles.textSlogan}>Wellcome to yomelo, apply with us</Text>
                 </View>
                 <View style={[styles.container,{alignItems:'stretch'}]}>
                     <Button block primary

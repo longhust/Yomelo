@@ -5,7 +5,7 @@ import {
     StyleSheet
 } from 'react-native'
 import { Icon, Card, CardItem, Left, Right, Text } from 'native-base';
-import HeaderTitle from '../element/HeaderTitle';
+import HeaderTitle from '../../components/HeaderTitle';
 
 export default class Campaigns extends Component {
     static navigationOptions = (navigation) => ({

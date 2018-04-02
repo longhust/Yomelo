@@ -7,7 +7,7 @@ import {
     FlatList
 } from 'react-native';
 import { Icon } from 'native-base';
-import ItemCampaign from '../element/ItemCampaign';
+import ItemCampaign from '../../components/ItemCampaign';
 import { listCampaigns } from '../../data/listcampaign';
 export default class Home extends Component {
 
@@ -66,7 +66,7 @@ export default class Home extends Component {
         return (
             <FlatList
                 data={listCampaigns}
-                renderItem={({ item, index }) => <ItemCampaign />}
+                renderItem={({ item, index }) => <ItemCampaign navigation={this.props.navigation}/>}
             />
         )
     }
