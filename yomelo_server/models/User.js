@@ -2,20 +2,16 @@ var db = require('../databaseConfig/dbConnection');
 
 var User = {
     addUser: function (user, callback) {
-        //db.connect();
-        const sql="Insert into users (name, username,email,password,phone,avatar, type, token) values(?,?,?,?,?,?,?,?)";
-        const data=[user.name, user.username, user.email, user.password, user.phone, user.avatar,user.type,user.token];
-        console.log(user.name, user.username, user.email, user.password, user.phone, user.avatar,user.type,user.token)
-        return db.query(sql,data,callback);
+        const sql='INSERT INTO users SET ?'
+        return db.query(sql,user,callback);
     },
-    getAllUsers: function (callback) {
-        return db.query("SELECT * FROM users", callback);
+    verifyAccount:function(user, callback){
+        const sql='SELECT token, is_actived FROM users WHERE email=? and password=?'
+        return db.query(sql,[user.email,user.password], callback);
     },
-    getUserByID: function (id, callback) {
-        return db.query("SELECT * FROM users WHERE id=?", [id], callback);
-    },
-    editUserByID: function (callback) {
-
+    updateActiveAccount:function(email,callback){
+        const sql='UPDATE users SET is_actived=1 WHERE email=?'
+        return db.query(sql,[email], callback)
     }
 }
 

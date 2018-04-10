@@ -9,6 +9,7 @@ import ForgetPassWord from '../containers/ForgetPassword';
 import DetailCampaign from '../containers/DetailCampaign';
 import SocialAccount from '../containers/SocialAccount';
 import DetailSocial from '../containers/DetailSocial';
+import VerifyAccount from '../containers/VerifyAccount';
 
 export default RootNavigation = StackNavigator({
     Flash:{
@@ -37,6 +38,9 @@ export default RootNavigation = StackNavigator({
     },
     DetailSocial:{
         screen:DetailSocial
+    },
+    VerifyAccount:{
+        screen:VerifyAccount
     }
 },{
     initialRouteName:'Flash'

@@ -9,55 +9,82 @@ import {
     Text
 } from 'react-native';
 import { Button, Input, Label, Item, Form, Icon } from 'native-base';
-import HeaderTitle from '../components/HeaderTitle'
-import VerifyAccount from './VerifyAccount'
+import HeaderTitle from '../components/HeaderTitle';
+import { registerAccount } from '../actions/actionRegister'
+import validator from '../validates/validator'
+import { connect } from 'react-redux'
 var screenSize = Dimensions.get('window');
-
-export default class Register extends Component {
+class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fullname: '',
-            fullnameValidate: false,
+            name: '',
+            nameValidate: null,
             username: '',
-            usernameValidate: false,
-            phoneNumber: '',
-            phoneNumberValidate: false,
+            usernameValidate: null,
+            phone: '',
+            phoneValidate: null,
             email: '',
-            emailValidate: false,
+            emailValidate: null,
             password: '',
-            passwordValidate: false
+            passwordValidate: null,
         }
     }
 
     static navigationOptions = {
         headerTitle: <HeaderTitle title='Register' />
-
     }
 
-    validate = (text, type) => {
-        if (type == 'fullname') {
-            alph = /^[a-zA-Z]/;
-            console.log(alph.test(text));
-            if (alph.test(text)) {
-                this.setState({ fullname: text })
-                console.log('fullname:', text);
-            }
-        } else if (type == 'username') {
 
-        } else if (type == 'phoneNumber') {
+    validateFullName = (name) => {
+        const result = validator.checkFullName(name)
+        this.setState({ name: name, nameValidate: result })
 
-        } else if (type == 'email') {
+    }
+    validateUsername = (username) => {
+        const result = validator.checkUsername(username)
+        this.setState({ username: username, usernameValidate: result })
 
-        } else if (type = 'password') {
+    }
+    validatePhonenumber = (phone) => {
+        const result = validator.checkPhoneNumber(phone) ? true : false
+        this.setState({ phone: phone, phoneValidate: result })
 
-        }
+    }
+    validateEmail = (email) => {
+        const result = validator.checkEmail(email);
+        this.setState({ email: email, emailValidate: result })
+
+    }
+    validatePassword = (password) => {
+        const result = validator.checkPassword(password)
+        this.setState({ password: password, passwordValidate: result })
+
+    }
+    _renderValidate = (validate) => {
+        //console.log("validate", validate);
+        return (
+
+            validate == null ? null : (validate ? <Icon name='ios-checkmark-outline' style={{ color: 'green' }} /> :
+                <Icon name='ios-alert-outline' style={{ color: 'red' }} />)
+        )
     }
 
     onPressLogin = () => {
-
+        const { name, username, phone, email, nameValidate, password, usernameValidate, emailValidate, phoneValidate, passwordValidate } = this.state
+        if (nameValidate && usernameValidate && emailValidate && phoneValidate && passwordValidate) {
+            this.props.registerAccount({ name, username, phone, email, password, type: 'INFLUENCER' });
+        }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.success) {
+            this.props.navigation.navigate("VerifyAccount",{
+                email:nextProps.user.email,
+                password:nextProps.user.password,
+            });
+        }
+    }
     render() {
         const { value } = this.state
         return (
@@ -66,8 +93,6 @@ export default class Register extends Component {
                 <ScrollView
                     ref='scroll'
                     style={styles.bar}
-                    //horizontal={true}
-                    //pagingEnabled={true}
                     scrollEnabled={true}
                 >
                     <View style={styles.step}>
@@ -79,13 +104,13 @@ export default class Register extends Component {
                                     placeholderTextColor='#bcb7b7'
                                     autoCorrect={false}
                                     returnKeyType='next'
-                                    onChangeText={text => this.validate(text, 'fullname')}
+                                    onChangeText={text => this.validateFullName(text)}
                                     onSubmitEditing={(event) => {
-                                        //console.log(event);
-                                        this.refs.userName._root.focus()
+                                        this.refs.userName._root.focus();
                                     }}
-                                    value={this.state.fullname}
+                                    value={this.state.name}
                                 />
+                                {this._renderValidate(this.state.nameValidate)}
                             </Item>
                             <Item>
                                 <Icon active name='ios-person-outline' />
@@ -94,11 +119,12 @@ export default class Register extends Component {
                                     returnKeyType='next'
                                     autoCorrect={false}
                                     ref={'userName'}
+                                    onChangeText={text => this.validateUsername(text)}
                                     onSubmitEditing={(event) => {
-                                        //console.log(event);
-                                        this.refs.phoneNumber._root.focus()
+                                        this.refs.phone._root.focus();
                                     }}
                                 />
+                                {this._renderValidate(this.state.usernameValidate)}
                             </Item>
                             <Item>
                                 <Icon active name='ios-call-outline' />
@@ -106,12 +132,14 @@ export default class Register extends Component {
                                     placeholderTextColor='#bcb7b7'
                                     returnKeyType='next'
                                     keyboardType='numeric'
-                                    ref={'phoneNumber'}
+                                    ref={'phone'}
+                                    onChangeText={text => this.validatePhonenumber(text)}
                                     onSubmitEditing={(event) => {
-                                        //console.log(event);
+
                                         this.refs.email._root.focus()
                                     }}
                                 />
+                                {this._renderValidate(this.state.phoneValidate)}
                             </Item>
                             <Item>
                                 <Icon active name='ios-mail-outline' />
@@ -120,37 +148,39 @@ export default class Register extends Component {
                                     returnKeyType='next'
                                     keyboardType='email-address'
                                     ref={'email'}
+                                    onChangeText={text => this.validateEmail(text)}
                                     onSubmitEditing={(event) => {
-                                        //console.log(event);
+
                                         this.refs.password._root.focus()
                                     }}
                                 />
+                                {this._renderValidate(this.state.emailValidate)}
                             </Item>
                             <Item>
                                 <Icon active name='ios-key-outline' />
                                 <Input placeholder='Mật khẩu'
                                     placeholderTextColor='#bcb7b7'
                                     secureTextEntry={true}
-                                    returnKeyType='go'
+                                    returnKeyType='next'
                                     ref={'password'}
+                                    onChangeText={text => this.validatePassword(text)}
+                                    onSubmitEditing={(event) => {
+                                    }}
                                 />
+                                {this._renderValidate(this.state.passwordValidate)}
                             </Item>
-                            {/* <Item>
-                                <Icon active name='key' />
-                                <Input placeholder='Confirm password'
-                                    placeholderTextColor='#bcb7b7'
-                                    secureTextEntry={true}
-                                />
-                            </Item> */}
                         </Form>
-                        <View style={{ marginLeft: 20, marginRight: 20, paddingTop: 10 }}>
-                            <Button block info
-                                onPress={this.onPressLogin.bind(this)}
-                            >
-                                <Text style={{ color: 'white', fontSize: 18 }}>Sign In</Text>
-                            </Button>
 
+                        <View style={{ marginLeft: 20, marginRight: 20, paddingTop: 10 }}>
+                            {this.props.isRegister ? null :
+                                <Button block info
+                                    onPress={this.onPressLogin.bind(this)}
+                                >
+                                    <Text style={{ color: 'white', fontSize: 18 }}>Sign In</Text>
+                                </Button>
+                            }
                         </View>
+
                         <View style={{ marginLeft: 70, marginRight: 70, paddingTop: 20, alignItems: 'center' }}>
                             <Text style={{ paddingBottom: 20 }}>Hoặc</Text>
                             <Button full light
@@ -196,4 +226,23 @@ const styles = StyleSheet.create({
         width: screenSize.width,
         justifyContent: 'center',
     },
-})
+});
+
+const mapStateToProps = (state) => {
+    const { user, isRegister, success, error } = state.registerReducer;
+    return {
+        user,
+        isRegister,
+        success,
+        error,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        registerAccount: (newUser) => {
+            dispatch(registerAccount(newUser))
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Register)
