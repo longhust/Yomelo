@@ -12,14 +12,14 @@ function* resgisterNewUser(action) {
     try {
         //console.log("register")
         const result = yield Api.registerNewUser(action.newUser);
-        if (result) {
+        if (result===200) {
             yield put({ type: REGISTER_ACCOUNT_SUCCESS, user: action.newUser });
         } else {
-            yield put({ type: REGISTER_ACCOUNT_FAIL, error: 'Email existed!' });
+            yield put({ type: REGISTER_ACCOUNT_FAIL, error: result });
         }
     } catch (error) {
-        console.log(error)
-        yield put({ type: REGISTER_ACCOUNT_FAIL, error: 'Not Connect Internet' });
+        //console.log(error)
+        yield put({ type: REGISTER_ACCOUNT_FAIL, error: "Not Connect Internet" });
     }
 }
 export function* watchRegister() {

@@ -21,7 +21,9 @@ export function* registerNewUser(newUser) {
         })
     });
     //console.log(yield respone.json());
-    return yield respone.status === 200;
+    const result= yield respone.json();
+    //console.log(result.code)
+    return result.code;
 }
 export function* verifyAccount(user) {
     console.log("api verify", user)
@@ -37,8 +39,9 @@ export function* verifyAccount(user) {
             token: user.token
         })
     });
-    console.log(yield respone.json());
-    return yield respone.status === 200
+    const result = yield respone.json();
+    console.log(result)
+    return result.code;
 }
 
 export const Api = {
