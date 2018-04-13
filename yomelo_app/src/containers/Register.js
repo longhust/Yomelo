@@ -28,6 +28,7 @@ class Register extends Component {
             emailValidate: null,
             password: '',
             passwordValidate: null,
+            submit: false
         }
     }
 
@@ -64,29 +65,47 @@ class Register extends Component {
     _renderValidate = (validate) => {
         //console.log("validate", validate);
         return (
-
             validate == null ? null : (validate ? <Icon name='ios-checkmark-outline' style={{ color: 'green' }} /> :
                 <Icon name='ios-alert-outline' style={{ color: 'red' }} />)
         )
     }
 
-    onPressLogin = () => {
+    _onPressLogin = () => {
+        console.log('login')
         const { name, username, phone, email, nameValidate, password, usernameValidate, emailValidate, phoneValidate, passwordValidate } = this.state
+        this.setState({ submit: true, valueNameError: true })
+        if (!nameValidate) {
+            this.setState({ name: '' })
+        }
         if (nameValidate && usernameValidate && emailValidate && phoneValidate && passwordValidate) {
             this.props.registerAccount({ name, username, phone, email, password, type: 'INFLUENCER' });
         }
     }
+    _renderErrorRegister = (err) => {
+        console.log("err",err);
+        var resultError = '';
+        if (err === 301) {
+            resultError = "Email đã được sử dụng";
+        } else if (err === 302) {
+            resultError = "Username đã được sử dụng";
+        } else {
+            resultError = "Check internet";
+        }
+        return <Text style={{color:'red', fontSize:12, marginTop:7}}>{resultError}</Text>
+    }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.success) {
-            this.props.navigation.navigate("VerifyAccount",{
-                email:nextProps.user.email,
-                password:nextProps.user.password,
+            this.props.navigation.navigate("VerifyAccount", {
+                email: nextProps.user.email,
+                password: nextProps.user.password,
             });
         }
     }
     render() {
-        const { value } = this.state
+        // console.log("sumit:", this.state.submit, "namevalidate:", this.state.nameValidate);
+        // const value = (this.state.submit && !this.state.nameValidate)
+        // console.log("value", value)
         return (
             <View style={styles.container}>
 
@@ -100,9 +119,11 @@ class Register extends Component {
                             <Text style={{ color: '#0abaee', fontSize: 15, justifyContent: 'center', paddingBottom: 10 }}>Nhập thông tin tài khoản</Text>
                             <Item>
                                 <Icon active name='ios-person-add-outline' />
-                                <Input placeholder='Họ và Tên'
-                                    placeholderTextColor='#bcb7b7'
+                                <Input
+                                    placeholder="Họ và Tên"
+                                    placeholderTextColor="#bcb7b7"
                                     autoCorrect={false}
+                                    style={styles.input}
                                     returnKeyType='next'
                                     onChangeText={text => this.validateFullName(text)}
                                     onSubmitEditing={(event) => {
@@ -117,6 +138,7 @@ class Register extends Component {
                                 <Input placeholder='Tên tài khoản'
                                     placeholderTextColor='#bcb7b7'
                                     returnKeyType='next'
+                                    style={styles.input}
                                     autoCorrect={false}
                                     ref={'userName'}
                                     onChangeText={text => this.validateUsername(text)}
@@ -131,6 +153,7 @@ class Register extends Component {
                                 <Input placeholder='Số điên thoại'
                                     placeholderTextColor='#bcb7b7'
                                     returnKeyType='next'
+                                    style={styles.input}
                                     keyboardType='numeric'
                                     ref={'phone'}
                                     onChangeText={text => this.validatePhonenumber(text)}
@@ -146,6 +169,7 @@ class Register extends Component {
                                 <Input placeholder='Email'
                                     placeholderTextColor='#bcb7b7'
                                     returnKeyType='next'
+                                    style={styles.input}
                                     keyboardType='email-address'
                                     ref={'email'}
                                     onChangeText={text => this.validateEmail(text)}
@@ -162,6 +186,7 @@ class Register extends Component {
                                     placeholderTextColor='#bcb7b7'
                                     secureTextEntry={true}
                                     returnKeyType='next'
+                                    style={styles.input}
                                     ref={'password'}
                                     onChangeText={text => this.validatePassword(text)}
                                     onSubmitEditing={(event) => {
@@ -169,12 +194,13 @@ class Register extends Component {
                                 />
                                 {this._renderValidate(this.state.passwordValidate)}
                             </Item>
+                            {this.props.error == null ? null : this._renderErrorRegister(this.props.error)}
                         </Form>
 
                         <View style={{ marginLeft: 20, marginRight: 20, paddingTop: 10 }}>
                             {this.props.isRegister ? null :
                                 <Button block info
-                                    onPress={this.onPressLogin.bind(this)}
+                                    onPress={this._onPressLogin.bind(this)}
                                 >
                                     <Text style={{ color: 'white', fontSize: 18 }}>Sign In</Text>
                                 </Button>
@@ -219,6 +245,10 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 16,
         color: 'black'
+    },
+    input: {
+        fontSize: 15,
+        color: 'black',
     },
     step: {
         //flex: 1,

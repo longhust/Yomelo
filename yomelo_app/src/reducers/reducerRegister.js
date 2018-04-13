@@ -7,9 +7,9 @@ const initiateState = {
     user: '',
     isRegister: false,
     success: false,
-    error: false,
+    error: null,
     isConfirm: false,
-    confirmSuccess: null,
+    confirmSuccess: false,
 }
 
 const registerReducer = (state = initiateState, action) => {
@@ -24,7 +24,7 @@ const registerReducer = (state = initiateState, action) => {
             }
         case REGISTER_ACCOUNT_FAIL:
             return {
-                ...state, isRegister: false, success: false, error: true
+                ...state, isRegister: false, success: false, error: action.error
             }
         case VERIFY_ACCOUNT:
             return {

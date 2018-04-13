@@ -10,7 +10,7 @@ import DetailCampaign from '../containers/DetailCampaign';
 import SocialAccount from '../containers/SocialAccount';
 import DetailSocial from '../containers/DetailSocial';
 import VerifyAccount from '../containers/VerifyAccount';
-import SocialConnection from '../containers/SocialConnection';
+import SocialConnection from '../containers/SocialConnection'
 
 export default RootNavigation = StackNavigator({
     Flash:{
