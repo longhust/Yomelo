@@ -1,10 +1,11 @@
+const ip = '192.168.0.101';
+const urlRegister = `http://${ip}:3000/api/register`;
+const urlLogin = `http://${ip}:3000/api/login`;
+const urlVerify = `http://${ip}:3000/api/register/verify`;
 
-const urlRegister = 'http://192.168.1.28:3000/api/register'
-const urlLogin = 'http://192.168.1.28:3000/api/login';
-const urlVerify = 'http://192.168.1.28:3000/api/register/verify'
-
-export function* registerNewUser(newUser) {
+function* registerNewUser(newUser) {
     //console.log('API');
+    //console.log(urlRegister);
     const respone = yield fetch(urlRegister, {
         method: 'POST',
         headers: {
@@ -20,12 +21,10 @@ export function* registerNewUser(newUser) {
             type: newUser.type,
         })
     });
-    //console.log(yield respone.json());
-    const result= yield respone.json();
-    //console.log(result.code)
+    const result = yield respone.json();
     return result.code;
 }
-export function* verifyAccount(user) {
+function* verifyAccount(user) {
     console.log("api verify", user)
     const respone = yield fetch(urlVerify, {
         method: 'POST',
@@ -40,11 +39,11 @@ export function* verifyAccount(user) {
         })
     });
     const result = yield respone.json();
-    console.log(result)
+    //console.log(result)
     return result.code;
 }
 
-export const Api = {
+export const ApiRegister = {
     registerNewUser,
     verifyAccount
 }

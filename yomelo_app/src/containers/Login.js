@@ -15,19 +15,77 @@ import {
 } from 'react-native'
 
 import { Button, Icon } from 'native-base';
-
+import { connect } from 'react-redux';
+import { loginAccount } from '../actions/login';
+import validator from '../validates/validator'
 var sizeScreen = Dimensions.get('window');
-export default class Login extends Component {
+class Login extends Component {
 
     static navigationOptions = {
         header: null,
     }
+    constructor(props) {
+        super(props);
+        this.state = {
+            inputName: '',
+            password: '',
+            errorMessage: ''
+        }
+    }
+    _login() {
+        Keyboard.dismiss
+        const valiateEmail = validator.checkEmail(this.state.inputName);
+        const validatUsername = validator.checkUsername(this.state.inputName);
+        const validatePassword = validator.checkPassword(this.state.password)
+        if (!valiateEmail && !validatePassword) {
+            this.setState({ errorInput: "Email hoặc Username không hợp lệ" });
+            return;
+        }
+        if (!validatePassword) {
+            this.setState({ errorInput: 'Password không hợp lệ' })
+            return;
+        }
+        if (validatePassword && (valiateEmail || validatUsername)) {
+            if (valiateEmail) {
+                this.props.loginAccount({ email: this.state.inputName, password: this.state.password })
+            } else {
+                this.props.loginAccount({ username: this.state.inputName, password: this.state.password });
+            }
+        }
+    }
+    _renderError(errorCode) {
+        const errorMessage= this.state.errorMessage
+        if (errorCode == 202) {
+            errorMessage = 'Sai mật khẩu';
+        } else if (errorCode == 204) {
+            errorMessage = 'Email hoặc username không đúng';
+        } else if (errorCode == 400) {
+            errorMessage = 'Error Server';
+        } else if (errorCode == 404) {
+            errorMessage = 'Not connect to server';
+        }
+        return <Text style={{ color: 'red', fontSize: 12, marginTop: 5, marginBottom:5 }}>{errorMessage}</Text>
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.loginSuccess) {
+            console.log(nextProps.user.is_actived == 0);
+            if (nextProps.user.is_actived == 0) {
+                this.props.navigation.navigate("VerifyAccount", {
+                    email: nextProps.user.email,
+                    password: nextProps.user.password,
+                });
+            } else {
+                this.props.navigation.navigate("TapHome");
+            }
+        }
+    }
+
     render() {
-        // console.log(sizeScreen);
         return (
             <SafeAreaView style={styles.container}>
                 <StatusBar barStyle='light-content' />
-                {/* <KeyboardAvoidingView behavior='height' style={styles.container}> */}
                 <TouchableWithoutFeedback style={styles.container} onPress={Keyboard.dismiss}>
                     <View style={styles.container}>
                         <Image
@@ -46,6 +104,7 @@ export default class Login extends Component {
                                     placeholderTextColor='rgba(255,255,255,0.2)'
                                     keyboardType='email-address'
                                     returnKeyType='next'
+                                    onChangeText={(text) => this.setState({ inputName: text })}
                                     autoCorrect={false}
                                     onSubmitEditing={() => this.refs.txtPassword.focus()}
                                 />
@@ -55,12 +114,14 @@ export default class Login extends Component {
                                     placeholder='Password'
                                     placeholderTextColor='rgba(255,255,255,0.2)'
                                     returnKeyType='go'
+                                    onChangeText={(text) => this.setState({ password: text })}
                                     secureTextEntry={true}
                                     autoCorrect={false}
                                     ref={'txtPassword'}
                                 />
+                                {this.props.errorCode == null ? null : this._renderError(this.props.errorCode)}
                                 <TouchableHighlight style={styles.buttonContainer}
-                                    onPress={() => this.props.navigation.navigate('TapHome')}
+                                    onPress={() => this._login()}
                                     underlayColor='#0ABAEE'
                                 >
                                     <Text style={styles.buttonText}>Sign In</Text>
@@ -98,10 +159,8 @@ export default class Login extends Component {
 
                     </View>
                 </TouchableWithoutFeedback>
-                {/* </KeyboardAvoidingView> */}
-
             </SafeAreaView>
-        )
+        );
     }
 }
 const styles = StyleSheet.create({
@@ -174,4 +233,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         //backgroundColor: 'red'
     },
-})
+});
+
+const mapStateToProps = (state) => {
+    const { user, isLogin, loginSuccess, errorCode } = state.loginReducer
+    return {
+        user, isLogin, loginSuccess, errorCode
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loginAccount: (params) => {
+            dispatch(loginAccount(params))
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

@@ -1,12 +1,17 @@
 
 var express = require('express');
 var router = express.Router();
+var User = require('../models/User')
 var connection = require('../databaseConfig/dbConnection')
 /* GET home page. */
 router.post('/', function (req, res, next) {
-    var email = req.body.email;
-    var password = req.body.password;
-    connection.query('SELECT * FROM users WHERE email = ?',[email], function (error, results, fields) {
+    var user = {
+        "email": req.body.email,
+        "password": req.body.password,
+        "username": req.body.username,
+    }
+
+    User.getUser(user, function (error, results, fields) {
         if (error) {
             console.log("error ocurred", error);
             res.send({
@@ -16,16 +21,15 @@ router.post('/', function (req, res, next) {
         } else {
             //console.log('The solution is: ', results);
             if (results.length > 0) {
-                console.log(results[0].password)
-                if (results[0].password == password) {
+                if (results[0].password == user.password) {
                     res.send({
                         "code": 200,
-                        "success": "login sucessfull"
+                        "success": "login sucessfull",
+                        "user":results[0],
                     });
-                }
-                else {
+                } else {
                     res.send({
-                        "code": 204,
+                        "code": 202,
                         "success": "Email and password does not match"
                     });
                 }
@@ -33,7 +37,7 @@ router.post('/', function (req, res, next) {
             else {
                 res.send({
                     "code": 204,
-                    "success": "Email does not exits"
+                    "success": "Email or Username does not exits"
                 });
             }
         };

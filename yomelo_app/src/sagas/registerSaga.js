@@ -4,14 +4,14 @@ import {
 
 } from '../actions/type';
 
-import { Api } from './api/register';
+import { ApiRegister } from './api/register';
 import { put, takeLatest } from 'redux-saga/effects';
 
 function* resgisterNewUser(action) {
     //console.log(action);
     try {
         //console.log("register")
-        const result = yield Api.registerNewUser(action.newUser);
+        const result = yield ApiRegister.registerNewUser(action.newUser);
         if (result===200) {
             yield put({ type: REGISTER_ACCOUNT_SUCCESS, user: action.newUser });
         } else {
@@ -26,9 +26,9 @@ export function* watchRegister() {
     yield takeLatest(REGISTER_ACCOUNT, resgisterNewUser);
 }
 function* verifyAccount(action) {
-    console.log("register", action)
+    //console.log("register", action)
     try {
-        const result = yield Api.verifyAccount(action.user);
+        const result = yield ApiRegister.verifyAccount(action.user);
         if (result) {
             yield put({ type: VERIFY_ACCOUNT_SUCSESS });
         } else {

@@ -10,6 +10,7 @@
     "native-base": "^2.3.10",
     "react": "16.3.0-alpha.1",
     "react-native": "0.54.2",
+    "react-native-fbsdk": "^0.7.0",
     "react-native-lightbox": "^0.7.0",
     "react-native-off-canvas-menu": "^0.1.31",
     "react-native-swiper": "^1.5.13",

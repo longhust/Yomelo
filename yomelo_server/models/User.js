@@ -1,7 +1,6 @@
 var db = require('../databaseConfig/dbConnection');
 
 var User = {
-
     //register
 
     checkEmailExist:function(email,callback){
@@ -27,6 +26,16 @@ var User = {
         const sql='UPDATE users SET is_actived=1 WHERE email=?'
         return db.query(sql,[email], callback)
     },
+    // login
+    getUser: function(user, callback){
+        const sqlUsername='SELECT * FROM users WHERE username=?'
+        const sqlEmail='SELECT * FROM users WHERE email=?'
+        if(user.email!=undefined){
+            return db.query(sqlEmail,[user.email],callback);
+        }else if(user.username!=undefined){
+            return db.query(sqlUsername,[user.username], callback)
+        }
+    }
     
 
 }

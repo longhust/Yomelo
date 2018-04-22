@@ -82,7 +82,7 @@ class Register extends Component {
         }
     }
     _renderErrorRegister = (err) => {
-        console.log("err",err);
+        //console.log("err",err);
         var resultError = '';
         if (err === 301) {
             resultError = "Email đã được sử dụng";
